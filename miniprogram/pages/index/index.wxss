@@ -1,0 +1,173 @@
+.header {
+  text-align: center;
+  padding: 40rpx 0 30rpx;
+}
+
+.title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: #999999;
+  margin-top: 12rpx;
+}
+
+.input-card {
+  position: relative;
+}
+
+.url-input {
+  width: 100%;
+  min-height: 120rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #333333;
+}
+
+.placeholder {
+  color: #cccccc;
+}
+
+.input-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.btn-paste, .btn-clear {
+  font-size: 26rpx;
+  padding: 8rpx 24rpx;
+  border-radius: 8rpx;
+}
+
+.btn-paste {
+  color: #07c160;
+  background-color: rgba(7, 193, 96, 0.08);
+}
+
+.btn-clear {
+  color: #999999;
+  background-color: #f5f5f5;
+}
+
+.btn-parse {
+  margin-top: 30rpx;
+}
+
+.platforms {
+  margin-top: 60rpx;
+  text-align: center;
+}
+
+.platforms-title {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.platform-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.platform-item {
+  background-color: #ffffff;
+  padding: 12rpx 28rpx;
+  border-radius: 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.platform-name {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.clipboard-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 40rpx 30rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+
+.modal-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20rpx;
+}
+
+.modal-url {
+  display: block;
+  font-size: 24rpx;
+  color: #666666;
+  word-break: break-all;
+  line-height: 1.5;
+  padding: 16rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+}
+
+.modal-platform {
+  font-size: 24rpx;
+  color: #07c160;
+  margin-top: 16rpx;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 30rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+}
+
+.modal-btn.cancel {
+  background-color: #f5f5f5;
+  color: #666666;
+}
+
+.modal-btn.confirm {
+  background-color: #07c160;
+  color: #ffffff;
+}

@@ -1,0 +1,56 @@
+.header {
+  text-align: center;
+  padding: 80rpx 0 60rpx;
+}
+
+.app-name {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.app-version {
+  display: block;
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 8rpx;
+}
+
+.menu-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  line-height: normal;
+  font-size: 28rpx;
+}
+
+.menu-item::after {
+  border: none;
+}
+
+.menu-label {
+  color: #333333;
+  font-size: 30rpx;
+}
+
+.menu-arrow {
+  color: #cccccc;
+  font-size: 36rpx;
+}
+
+.menu-divider {
+  height: 1rpx;
+  background-color: #f0f0f0;
+  margin-left: 30rpx;
+}

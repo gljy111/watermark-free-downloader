@@ -1,0 +1,37 @@
+<view class="container">
+  <view class="top-bar" wx:if="{{historyList.length > 0}}">
+    <text class="top-title">解析历史</text>
+    <text class="btn-clear-all" bindtap="onClearHistory">清空</text>
+  </view>
+
+  <!-- 历史列表 -->
+  <view class="history-list" wx:if="{{historyList.length > 0}}">
+    <view
+      class="card history-item"
+      wx:for="{{historyList}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      bindtap="onItemTap"
+    >
+      <image class="item-cover" src="{{item.cover}}" mode="aspectFill" wx:if="{{item.cover}}" />
+      <view class="item-info">
+        <text class="item-title">{{item.title || '无标题'}}</text>
+        <view class="item-meta">
+          <text class="item-platform">{{item.platformLabel}}</text>
+          <text class="item-type">{{item.type === 'video' ? '视频' : '图集'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && historyList.length === 0}}">
+    <text class="empty-text">暂无解析记录</text>
+    <text class="empty-hint">去首页解析视频/图片吧</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

@@ -1,0 +1,56 @@
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="title">无水印下载</text>
+    <text class="subtitle">支持抖音、快手、小红书、B站、微博</text>
+  </view>
+
+  <!-- 输入区域 -->
+  <view class="card input-card">
+    <textarea
+      class="url-input"
+      placeholder="粘贴分享链接到这里"
+      placeholder-class="placeholder"
+      value="{{inputUrl}}"
+      bindinput="onInputChange"
+      maxlength="500"
+      auto-height
+    />
+    <view class="input-actions">
+      <view class="btn-paste" bindtap="onPaste">粘贴</view>
+      <view class="btn-clear" bindtap="onClear" wx:if="{{inputUrl}}">清空</view>
+    </view>
+  </view>
+
+  <!-- 解析按钮 -->
+  <button class="btn-primary btn-parse" bindtap="onParse" loading="{{parsing}}">
+    {{parsing ? '解析中...' : '开始解析'}}
+  </button>
+
+  <!-- 支持平台 -->
+  <view class="platforms">
+    <text class="platforms-title">支持平台</text>
+    <view class="platform-list">
+      <view class="platform-item" wx:for="{{platforms}}" wx:key="name">
+        <text class="platform-name">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 剪贴板弹窗 -->
+  <view class="clipboard-modal" wx:if="{{showClipboardModal}}">
+    <view class="modal-mask" bindtap="onDismissClipboard"></view>
+    <view class="modal-content">
+      <text class="modal-title">检测到链接</text>
+      <text class="modal-url">{{clipboardUrl}}</text>
+      <view class="modal-platform">来自：{{clipboardPlatformLabel}}</view>
+      <view class="modal-actions">
+        <button class="modal-btn cancel" bindtap="onDismissClipboard">取消</button>
+        <button class="modal-btn confirm" bindtap="onUseClipboard">解析</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部广告 -->
+  <ad unit-id="adunit-placeholder" ad-type="banner" ad-theme="white"></ad>
+</view>
