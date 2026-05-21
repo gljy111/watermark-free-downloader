@@ -3,16 +3,8 @@ const got = require('got')
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
-const REFERER_MAP = {
-  bilibili: 'https://www.bilibili.com/',
-  douyin: 'https://www.douyin.com/',
-  kuaishou: 'https://www.kuaishou.com/',
-  xiaohongshu: 'https://www.xiaohongshu.com/',
-  weibo: 'https://weibo.com/'
-}
-
 exports.main = async (event) => {
-  const { url, platform, headers: customHeaders } = event
+  const { url, headers: customHeaders } = event
 
   if (!url) {
     return { success: false, message: '缺少下载地址' }
@@ -20,16 +12,11 @@ exports.main = async (event) => {
 
   try {
     const headers = {
-      'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)'
+      'User-Agent': (customHeaders && customHeaders['User-Agent']) || 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)'
     }
 
-    if (customHeaders && customHeaders['User-Agent']) {
-      headers['User-Agent'] = customHeaders['User-Agent']
-    }
     if (customHeaders && customHeaders['Referer']) {
       headers['Referer'] = customHeaders['Referer']
-    } else if (platform && REFERER_MAP[platform]) {
-      headers['Referer'] = REFERER_MAP[platform]
     }
 
     const res = await got(url, {

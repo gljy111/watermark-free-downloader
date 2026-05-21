@@ -5,18 +5,4 @@ function extractUrl(text) {
   return matches[0]
 }
 
-const DEMO_PLATFORMS = [
-  { name: 'douyin', label: '抖音' },
-  { name: 'xiaohongshu', label: '小红书' },
-  { name: 'bilibili', label: 'B站' },
-  { name: 'weibo', label: '微博' }
-]
-
-function getDemoPlatforms() {
-  return DEMO_PLATFORMS
-}
-
-module.exports = {
-  extractUrl,
-  getDemoPlatforms
-}
+module.exports = { extractUrl }

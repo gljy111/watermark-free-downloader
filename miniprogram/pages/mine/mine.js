@@ -6,7 +6,7 @@ Page({
   onAbout() {
     wx.showModal({
       title: '关于',
-      content: '无水印下载 v1.0.0\n支持抖音、快手、小红书、B站、微博',
+      content: '无水印下载 v1.0.0\n支持数百个视频平台 · 基于yt-dlp',
       showCancel: false
     })
   },

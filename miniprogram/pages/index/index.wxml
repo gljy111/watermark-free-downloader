@@ -2,7 +2,7 @@
   <!-- 顶部标题 -->
   <view class="header">
     <text class="title">无水印下载</text>
-    <text class="subtitle">支持抖音、小红书、B站、微博及更多平台</text>
+    <text class="subtitle">支持数百个视频平台 · 粘贴链接即可解析</text>
   </view>
 
   <!-- 输入区域 -->
@@ -26,16 +26,6 @@
   <button class="btn-primary btn-parse" bindtap="onParse" loading="{{parsing}}">
     {{parsing ? '解析中...' : '开始解析'}}
   </button>
-
-  <!-- 支持平台 -->
-  <view class="platforms">
-    <text class="platforms-title">支持平台</text>
-    <view class="platform-list">
-      <view class="platform-item" wx:for="{{platforms}}" wx:key="name">
-        <text class="platform-name">{{item.label}}</text>
-      </view>
-    </view>
-  </view>
 
   <!-- 剪贴板弹窗 -->
   <view class="clipboard-modal" wx:if="{{showClipboardModal}}">

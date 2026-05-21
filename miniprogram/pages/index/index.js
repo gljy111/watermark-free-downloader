@@ -1,11 +1,10 @@
 const { checkClipboardForLink } = require('../../utils/clipboard')
-const { extractUrl, getDemoPlatforms } = require('../../utils/platform')
+const { extractUrl } = require('../../utils/platform')
 
 Page({
   data: {
     inputUrl: '',
     parsing: false,
-    platforms: getDemoPlatforms(),
     showClipboardModal: false,
     clipboardUrl: '',
     lastClipboardUrl: ''
