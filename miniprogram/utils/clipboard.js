@@ -1,4 +1,4 @@
-const { detectPlatform, extractUrl } = require('./platform')
+const { extractUrl } = require('./platform')
 
 function readClipboard() {
   return new Promise((resolve, reject) => {
@@ -21,10 +21,7 @@ async function checkClipboardForLink() {
     const url = extractUrl(text)
     if (!url) return null
 
-    const platform = detectPlatform(url)
-    if (!platform) return null
-
-    return { url, platform, rawText: text }
+    return { url, rawText: text }
   } catch (e) {
     return null
   }

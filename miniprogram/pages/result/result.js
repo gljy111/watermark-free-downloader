@@ -24,6 +24,7 @@ Page({
     db.collection('parse_history').add({
       data: {
         platform: result.platform,
+        platformLabel: result.platformLabel || result.platform || '',
         title: result.title,
         author: result.author,
         cover: result.cover,
@@ -39,7 +40,7 @@ Page({
     this.setData({ saving: true })
 
     try {
-      await downloadAndSaveVideo(this.data.result.videoUrl)
+      await downloadAndSaveVideo(this.data.result.videoUrl, this.data.result.platform, this.data.result._headers)
       wx.showToast({ title: '已保存到相册', icon: 'success' })
     } catch (err) {
       if (err.type === 'auth') {
@@ -57,7 +58,7 @@ Page({
     this.setData({ saving: true })
 
     try {
-      const results = await saveImages(this.data.result.images)
+      const results = await saveImages(this.data.result.images, this.data.result.platform, this.data.result._headers)
       const successCount = results.filter(r => r.success).length
       wx.showToast({
         title: `已保存 ${successCount}/${results.length} 张`,

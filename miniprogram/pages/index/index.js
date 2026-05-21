@@ -1,14 +1,13 @@
 const { checkClipboardForLink } = require('../../utils/clipboard')
-const { detectPlatform, extractUrl, getPlatformLabel, getSupportedPlatforms } = require('../../utils/platform')
+const { extractUrl, getDemoPlatforms } = require('../../utils/platform')
 
 Page({
   data: {
     inputUrl: '',
     parsing: false,
-    platforms: getSupportedPlatforms(),
+    platforms: getDemoPlatforms(),
     showClipboardModal: false,
     clipboardUrl: '',
-    clipboardPlatformLabel: '',
     lastClipboardUrl: ''
   },
 
@@ -24,7 +23,6 @@ Page({
     this.setData({
       showClipboardModal: true,
       clipboardUrl: result.url,
-      clipboardPlatformLabel: getPlatformLabel(result.platform),
       lastClipboardUrl: result.url
     })
   },
@@ -69,12 +67,6 @@ Page({
     const url = extractUrl(text)
     if (!url) {
       wx.showToast({ title: '未识别到有效链接', icon: 'none' })
-      return
-    }
-
-    const platform = detectPlatform(url)
-    if (!platform) {
-      wx.showToast({ title: '暂不支持该平台', icon: 'none' })
       return
     }
 

@@ -1,5 +1,3 @@
-const { getPlatformLabel } = require('../../utils/platform')
-
 Page({
   data: {
     historyList: [],
@@ -28,7 +26,7 @@ Page({
 
       const list = res.data.map(item => ({
         ...item,
-        platformLabel: getPlatformLabel(item.platform)
+        platformLabel: item.platformLabel || item.platform || ''
       }))
 
       this.setData({

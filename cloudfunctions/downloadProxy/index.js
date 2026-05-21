@@ -12,7 +12,7 @@ const REFERER_MAP = {
 }
 
 exports.main = async (event) => {
-  const { url, platform } = event
+  const { url, platform, headers: customHeaders } = event
 
   if (!url) {
     return { success: false, message: '缺少下载地址' }
@@ -23,14 +23,19 @@ exports.main = async (event) => {
       'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)'
     }
 
-    if (platform && REFERER_MAP[platform]) {
+    if (customHeaders && customHeaders['User-Agent']) {
+      headers['User-Agent'] = customHeaders['User-Agent']
+    }
+    if (customHeaders && customHeaders['Referer']) {
+      headers['Referer'] = customHeaders['Referer']
+    } else if (platform && REFERER_MAP[platform]) {
       headers['Referer'] = REFERER_MAP[platform]
     }
 
     const res = await got(url, {
       headers,
       responseType: 'buffer',
-      timeout: { request: 30000 }
+      timeout: { request: 60000 }
     })
 
     const fileExt = url.includes('.mp4') ? 'mp4' : 'jpg'

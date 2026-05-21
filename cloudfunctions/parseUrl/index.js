@@ -1,58 +1,67 @@
 const cloud = require('wx-server-sdk')
-const douyinParser = require('./parsers/douyin')
-const kuaishouParser = require('./parsers/kuaishou')
-const xiaohongshuParser = require('./parsers/xiaohongshu')
-const bilibiliParser = require('./parsers/bilibili')
-const weiboParser = require('./parsers/weibo')
+const got = require('got')
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 
-const PARSERS = {
-  douyin: douyinParser,
-  kuaishou: kuaishouParser,
-  xiaohongshu: xiaohongshuParser,
-  bilibili: bilibiliParser,
-  weibo: weiboParser
-}
-
-const PLATFORM_RULES = [
-  { name: 'douyin', patterns: [/v\.douyin\.com/i, /www\.douyin\.com\/video/i, /www\.iesdouyin\.com/i] },
-  { name: 'kuaishou', patterns: [/v\.kuaishou\.com/i, /www\.kuaishou\.com\/short-video/i] },
-  { name: 'xiaohongshu', patterns: [/xhslink\.com/i, /www\.xiaohongshu\.com/i] },
-  { name: 'bilibili', patterns: [/b23\.tv/i, /www\.bilibili\.com\/video/i, /m\.bilibili\.com/i] },
-  { name: 'weibo', patterns: [/weibo\.com/i, /m\.weibo\.cn/i] }
-]
-
-function detectPlatform(url) {
-  for (const rule of PLATFORM_RULES) {
-    for (const pattern of rule.patterns) {
-      if (pattern.test(url)) return rule.name
-    }
-  }
-  return null
-}
-
-const PLATFORM_LABELS = {
-  douyin: '抖音',
-  kuaishou: '快手',
-  xiaohongshu: '小红书',
-  bilibili: 'B站',
-  weibo: '微博'
-}
+// 替换为你的 Python 后端地址
+const BACKEND_URL = 'https://yesterday-pouch-unworldly.ngrok-free.dev'
 
 const CACHE_TTL = 24 * 60 * 60 * 1000
+
+async function parseViaBackend(url) {
+  const apiUrl = `${BACKEND_URL}/api/parse?url=${encodeURIComponent(url)}`
+
+  const res = await got(apiUrl, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'ngrok-skip-browser-warning': '1',
+      'Accept': 'application/json'
+    },
+    responseType: 'json',
+    timeout: { request: 55000 }
+  })
+
+  const body = res.body
+  if (!body.success || !body.data) {
+    throw new Error(body.message || '后端解析失败')
+  }
+
+  const d = body.data
+
+  if (d.type === 'images' && d.images && d.images.length > 0) {
+    return {
+      type: 'images',
+      title: d.title || '',
+      author: d.author || '',
+      cover: d.cover || d.images[0],
+      images: d.images,
+      platform: d.platform || '',
+      platformLabel: d.platformLabel || d.platform || ''
+    }
+  }
+
+  if (d.videoUrl) {
+    return {
+      type: 'video',
+      title: d.title || '',
+      author: d.author || '',
+      cover: d.cover || '',
+      videoUrl: d.videoUrl,
+      _headers: d.headers || null,
+      platform: d.platform || '',
+      platformLabel: d.platformLabel || d.platform || ''
+    }
+  }
+
+  throw new Error('后端未返回视频或图片')
+}
 
 exports.main = async (event) => {
   const { url } = event
 
   if (!url) {
     return { success: false, message: '请提供链接' }
-  }
-
-  const platform = detectPlatform(url)
-  if (!platform) {
-    return { success: false, message: '暂不支持该平台' }
   }
 
   try {
@@ -66,15 +75,8 @@ exports.main = async (event) => {
     }
   } catch (e) {}
 
-  const parser = PARSERS[platform]
-  if (!parser) {
-    return { success: false, message: '解析器不可用' }
-  }
-
   try {
-    const result = await parser.parse(url)
-    result.platform = platform
-    result.platformLabel = PLATFORM_LABELS[platform]
+    const result = await parseViaBackend(url)
     result.originalUrl = url
 
     try {
@@ -90,7 +92,14 @@ exports.main = async (event) => {
 
     return { success: true, data: result }
   } catch (err) {
-    console.error(`[${platform}] 解析失败:`, err)
-    return { success: false, message: '解析失败，请稍后重试' }
+    console.error('解析失败:', err.message)
+    return {
+      success: false,
+      message: err.message.includes('Unsupported URL')
+        ? '暂不支持该链接格式，请尝试其他链接'
+        : err.message.includes('yt-dlp')
+          ? err.message
+          : `解析失败: ${err.message}`
+    }
   }
 }
